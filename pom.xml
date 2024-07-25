@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <version>27.0.0.ota.1</version>
     <name>Adyen Java API Library</name>
-    <description>Adyen API Client Library for Java</description>
+    <description>Fork of Adyen API Client Library for Java</description>
     <url>https://github.com/adyen/adyen-java-api-library</url>
     <licenses>
         <license>
