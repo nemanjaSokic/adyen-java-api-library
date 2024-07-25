@@ -134,6 +134,33 @@ public class CheckoutPaymentMethod extends AbstractOpenApiSchema {
             int match = 0;
             JsonToken token = tree.traverse(jp.getCodec()).nextToken();
 
+            // deserialize PayByBankAISDirectDebitDetails
+            try {
+                boolean attemptParsing = true;
+                // ensure that we respect type coercion as set on the client ObjectMapper
+                if (PayByBankAISDirectDebitDetails.class.equals(Integer.class) || PayByBankAISDirectDebitDetails.class.equals(Long.class) || PayByBankAISDirectDebitDetails.class.equals(Float.class) || PayByBankAISDirectDebitDetails.class.equals(Double.class) || PayByBankAISDirectDebitDetails.class.equals(Boolean.class) || PayByBankAISDirectDebitDetails.class.equals(String.class)) {
+                    attemptParsing = typeCoercion;
+                    if (!attemptParsing) {
+                        attemptParsing |= ((PayByBankAISDirectDebitDetails.class.equals(Integer.class) || PayByBankAISDirectDebitDetails.class.equals(Long.class)) && token == JsonToken.VALUE_NUMBER_INT);
+                        attemptParsing |= ((PayByBankAISDirectDebitDetails.class.equals(Float.class) || PayByBankAISDirectDebitDetails.class.equals(Double.class)) && token == JsonToken.VALUE_NUMBER_FLOAT);
+                        attemptParsing |= (PayByBankAISDirectDebitDetails.class.equals(Boolean.class) && (token == JsonToken.VALUE_FALSE || token == JsonToken.VALUE_TRUE));
+                        attemptParsing |= (PayByBankAISDirectDebitDetails.class.equals(String.class) && token == JsonToken.VALUE_STRING);
+                    }
+                }
+                // Checks if the unique type of the oneOf json matches any of the object TypeEnum values
+                boolean typeMatch = Arrays.stream(PayByBankAISDirectDebitDetails.TypeEnum.values()).anyMatch((t) -> t.getValue().contains(tree.findValue("type").asText()));
+                if (attemptParsing || typeMatch) {
+                    // Strict deserialization for oneOf models
+                    deserialized = JSON.getMapper().readValue(tree.toString(), PayByBankAISDirectDebitDetails.class);
+                    // typeMatch should enforce proper deserialization
+                    match++;
+                    log.log(Level.FINER, "Input data matches schema 'AchDetails'");
+                }
+            } catch (Exception e) {
+                // deserialization failed, continue
+                log.log(Level.FINER, "Input data does not match schema 'AchDetails'", e);
+            }
+            
             // deserialize AchDetails
             try {
                 boolean attemptParsing = true;
@@ -1652,6 +1679,10 @@ public class CheckoutPaymentMethod extends AbstractOpenApiSchema {
      */
     @Override
     public void setActualInstance(Object instance) {
+        if(JSON.isInstanceOf(PayByBankAISDirectDebitDetails.class, instance, new HashSet<Class<?>>())) {
+            super.setActualInstance(instance);
+            return;
+        }
         if (JSON.isInstanceOf(AchDetails.class, instance, new HashSet<Class<?>>())) {
             super.setActualInstance(instance);
             return;

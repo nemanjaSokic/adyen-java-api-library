@@ -91,35 +91,36 @@ public class CardDetails {
    * The funding source that should be used when multiple sources are available. For Brazilian combo cards, by default the funding source is credit. To use debit, set this value to **debit**.
    */
   public enum FundingSourceEnum {
-    CREDIT("credit"),
-    
-    DEBIT("debit");
+      CREDIT("credit"),
+      DEBIT("debit");
 
-    private String value;
+      private String value;
 
-    FundingSourceEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static FundingSourceEnum fromValue(String value) {
-      for (FundingSourceEnum b : FundingSourceEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
+      FundingSourceEnum(String value) {
+          this.value = value;
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
+
+      @JsonValue
+      public String getValue() {
+          return value;
+      }
+
+      @Override
+      public String toString() {
+          return String.valueOf(value);
+      }
+
+      @JsonCreator
+      public static FundingSourceEnum fromValue(String value) {
+          for (FundingSourceEnum b : FundingSourceEnum.values()) {
+              if (b.value.equals(value)) {
+                  return b;
+              }
+          }
+          // Return null for any unexpected value
+          return null;
+      }
+
   }
 
   public static final String JSON_PROPERTY_FUNDING_SOURCE = "fundingSource";
